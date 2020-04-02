@@ -1,0 +1,62 @@
+
+	// /***
+	// * This function builds Log graph by invoking the model based then rules ranking functions it only build the structure 1 main assumption in the implementation here that the log \ chunk starts with start events
+	// */
+	// public LGraph buildLGraph(List<Event> uEvents_, int caseCounter, int nodeCounter) {
+	// List<Event> uEvents = new CopyOnWriteArrayList<>(uEvents_);
+	//
+	// // Creating the entry node of LGraph
+	// Event e1 = uEvents.get(0);
+	// Marking rootPEMarking = model.fireActivity(e1.getActivity(), null);
+	//
+	// ENode entryNode = new ENode(null, nodeCounter, e1.getEId(), caseCounter);
+	// // HashMap
+	// // ConcurrentHashMap<Integer, CaseStatus> casesStatus = new ConcurrentHashMap<Integer, CaseStatus>();
+	// // casesStatus.put(caseCounter, new CaseStatus(entryNode, rootPEMarking, caseCounter));
+	// // entryNode.setCasesCurrentState(casesStatus);
+	//
+	// // using List
+	// CopyOnWriteArrayList<CaseStatus> casesStatus = new CopyOnWriteArrayList<>();
+	// casesStatus.add(new CaseStatus(entryNode, rootPEMarking, caseCounter));
+	// entryNode.setCaseStatus(casesStatus);
+	//
+	// LGraph logGraph = new LGraph(entryNode);
+	// logGraph.setExitNode(entryNode);
+	//
+	// nodeCounter++;
+	// caseCounter++;
+	//
+	// // rest of the events
+	// for (int i = 1; i < uEvents.size(); i++) {
+	// Event cEvent = uEvents.get(i);
+	// ConcurrentHashMap<Integer, Marking> possibleCases = possibleCasesBasedOnModel(cEvent,
+	// logGraph.getExitNode());
+	//
+	// // Invoke rules selection 1- in case the model have some expected cases then use this nodes for rules investigation, 2- in case of model deviation (non-enabled event) then check the rules over all the cases to retrieve the best option based on the rules satisfication
+	// List<ENode> possibleLEvents = new CopyOnWriteArrayList<>();
+	// ConcurrentHashMap<Integer, CaseStatus> lastNodeStatus = logGraph.getExitNode().getCasesCurrentState();
+	// if (possibleCases != null && !possibleCases.isEmpty()) {
+	// lastNodeStatus.forEachKey(possibleCases.size(), cID -> {
+	// if (possibleCases.containsKey(cID))
+	// possibleLEvents.add(lastNodeStatus.get(cID).getLastcaseENode());
+	// });
+	// } else {
+	// lastNodeStatus.forEachKey(possibleCases.size(), cID -> {
+	// possibleLEvents.add(lastNodeStatus.get(cID).getLastcaseENode());
+	// });
+	// }
+	//
+	// List<CaseStatus> possibleCids = possibleCasesBasedOnRules(cEvent, possibleLEvents);
+	//
+	// // create new node based on both the model and rule selection and select the assigned case based on the score sorting of rules
+	// possibleCids.sort(Comparator.comparingDouble(CaseStatus::getScore).reversed());
+	// ENode newNode = new ENode(logGraph.getExitNode(), nodeCounter, i, possibleCids.get(0).getCaseId());
+	// ConcurrentHashMap<Integer, CaseStatus> ccasesCurrentState = logGraph.getExitNode()
+	// .cloneCasesCurrentState(logGraph.getExitNode().getCasesCurrentState().size());
+	// newNode.setCasesCurrentState(ccasesCurrentState);
+	// logGraph.setExitNode(newNode);
+	// logGraph.getCasesLastEvent().put(newNode.getcId(), newNode);
+	// }
+	//
+	// return logGraph;
+	// }
